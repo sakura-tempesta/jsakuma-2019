@@ -8,10 +8,15 @@ package org.usfirst.frc.team6909.robot;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PWMTalonSRX;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class Robot extends IterativeRobot {
 	private XboxController driver;
+
 	private PWMTalonSRX m_leftArm;
 	private PWMTalonSRX m_rightArm;
 	
@@ -20,12 +25,13 @@ public class Robot extends IterativeRobot {
 		
 		m_leftArm = new PWMTalonSRX(5);
 		m_rightArm = new PWMTalonSRX(6);
+		m_rightArm.setInverted(true);
 	}
 	
 	public void teleopPeriodic() {
-		double value = driver.getY(Hand.kLeft);
-		
-		m_leftArm.set(value);
-		m_rightArm.set(-value);
+		// Armにdriverの信号を送る
+		// 左右のarmは逆回転すべきなので、m_rightArmを逆向きに
+		m_leftArm.set(driver.getY(Hand.kLeft));
+		m_rightArm.set(-driver.getY(Hand.kLeft));
 	}
 }
