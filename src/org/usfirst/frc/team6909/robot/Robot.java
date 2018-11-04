@@ -29,13 +29,17 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void teleopPeriodic() {
+		// 左のみが押された場合: armSpeed = 1
+		// 右のみが押された場合: armSpeed = -1
+		// 両方押された場合: armSpeed = 0 → 何も動かない
+		double armSpeed = driver.getTriggerAxis(Hand.kLeft) - driver.getTriggerAxis(Hand.kRight);
+
 		// Arm用の不感帯を設定
-		// driverからの入力が0.2以下の場合は無視する。
-		if (Math.abs(driver.getY(Hand.kLeft)) > 0.2) {
-			// Armにdriverの信号を送る
+		// driverからの入力が0.2以下の場合は無視し、それ以上の場合はMAXで動かす。
+		if (Math.abs(armSpeed) > 0.2) {
 			// 左右のarmは逆回転すべきなので、m_rightArmを逆向きに
-			m_leftArm.set(driver.getY(Hand.kLeft));
-			m_rightArm.set(-driver.getY(Hand.kLeft));
+			m_leftArm.set(1.0);
+			m_rightArm.set(-1.0);
 		} else {
 			m_leftArm.set(0.0);
 			m_rightArm.set(0.0);
