@@ -29,9 +29,16 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void teleopPeriodic() {
-		// Armにdriverの信号を送る
-		// 左右のarmは逆回転すべきなので、m_rightArmを逆向きに
-		m_leftArm.set(driver.getY(Hand.kLeft));
-		m_rightArm.set(-driver.getY(Hand.kLeft));
+		// Arm用の不感帯を設定
+		// driverからの入力が0.2以下の場合は無視する。
+		if (Math.abs(driver.getY(Hand.kLeft)) > 0.2) {
+			// Armにdriverの信号を送る
+			// 左右のarmは逆回転すべきなので、m_rightArmを逆向きに
+			m_leftArm.set(driver.getY(Hand.kLeft));
+			m_rightArm.set(-driver.getY(Hand.kLeft));
+		} else {
+			m_leftArm.set(0.0);
+			m_rightArm.set(0.0);
+		}
 	}
 }
