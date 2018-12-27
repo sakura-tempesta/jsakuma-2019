@@ -17,4 +17,13 @@ public class Constants {
 	
 	// ---------- Encoder Unit Conversion ----------
 	public static final double DriverDistancePerPulse = 7.7 * Math.PI / 10.71;
+	
+	// ---------- PID Constants ----------
+	public static final double driveStraightP = 0;
+	public static final double driveStraightI = 0;
+	public static final double driveStraightD = 0;
+	public static final double driveRotationP = 0;
+	public static final double driveRotationI = 0;
+	public static final double driveRotationD = 0;
+	
 }

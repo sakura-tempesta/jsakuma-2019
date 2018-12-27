@@ -66,9 +66,24 @@ public class Robot extends IterativeRobot {
 									e_leftDriveEncoder, e_rightDriveEncoder, g_gyro);
 	}
 	
+	/******************************
+	 * teleopPeriodic: Telopモードのiteration
+	 ******************************/
 	public void teleopPeriodic() {
 		// ---------- 足回り ----------
 		// ToDo: 不感帯をつける
-		drivetrain.arcadeDrive(driver.getY(Hand.kLeft), driver.getX(Hand.kRight));
+		if (driver.getAButton()) {
+			// PID Control
+			//	ボタンを押した地点から1m直進する
+			if (!drivetrain.isPIDEnabled()) {
+				// PIDが作動していなかった場合は、現在地から相対的な距離に目標点を定めてPIDを走らせる
+				drivetrain.setRelativeStraightSetpoint(100);
+			}
+			drivetrain.enablePID();
+		} else {
+			// Manual control
+			drivetrain.disablePID();
+			drivetrain.arcadeDrive(driver.getY(Hand.kLeft), driver.getX(Hand.kRight));
+		}
 	}
 }
